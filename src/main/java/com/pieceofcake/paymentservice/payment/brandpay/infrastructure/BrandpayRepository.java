@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface BrandpayRepository extends JpaRepository<BrandpayCustomer, Long> {
 
     Optional<BrandpayCustomer> findByMemberUuid(String memberUuid);
+    Optional<BrandpayCustomer> findByCustomerKey(String customerKey);
 }

@@ -27,12 +27,21 @@ public enum BaseResponseStatus {
     FAILED_TO_RESTORE(HttpStatus.INTERNAL_SERVER_ERROR, false, 405, "계정 복구에 실패했습니다. 관리자에게 문의해주세요."),
 
     /**
-     * 3000: users service error
+     * 4000: users service error
      */
-    BID_NOT_FOUND(HttpStatus.NOT_FOUND, false, 3000, "입찰 내역을 찾을 수 없습니다."),
+    INVALID_CUSTOMER_KEY(HttpStatus.BAD_REQUEST, false, 4000, "유효하지 않은 고객 키입니다."),
+    FAILED_TO_GET_TOSS_ACCESS_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, false, 4001, "Toss Payments 액세스 토큰을 가져오는 데 실패했습니다."),
+    FAILED_TO_GET_TOSS_METHOD_KEY(HttpStatus.INTERNAL_SERVER_ERROR, false, 4002, "Toss Payments 결제 수단 키를 가져오는 데 실패했습니다."),
 
-    // 3100: auction service error
-    AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, false, 3100, "경매를 찾을 수 없습니다."),
+
+
+
+
+
+
+
+
+
 
     INVALID_USER_INPUT(HttpStatus.BAD_REQUEST, false, 3000, "유효하지 않은 사용자 입력입니다.");
 

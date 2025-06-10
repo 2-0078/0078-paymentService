@@ -61,4 +61,30 @@ public class RegisterCardDto {
                 .tokenExpiresAt(tokenExpiresAt)
                 .build();
     }
+
+    public static BrandpayCustomer updatedEntityAccessToken(
+            BrandpayCustomer brandpayCustomer,
+            AccessTokenResponseDto accessTokenResponseDto
+    ) {
+        return BrandpayCustomer.builder()
+                .memberUuid(brandpayCustomer.getMemberUuid())
+                .customerKey(brandpayCustomer.getCustomerKey())
+                .methodKey(brandpayCustomer.getMethodKey())
+                .accessToken(accessTokenResponseDto.getAccessToken())
+                .refreshToken(accessTokenResponseDto.getRefreshToken())
+                .tokenExpiresAt(LocalDateTime.now().plusSeconds(accessTokenResponseDto.getExpiresIn()))     // 만료 예정 시각
+                .build();
+    }
+
+    public static BrandpayCustomer updatedEntityMethodKey(BrandpayCustomer brandpayCustomer, String methodKey) {
+        return BrandpayCustomer.builder()
+                .memberUuid(brandpayCustomer.getMemberUuid())
+                .customerKey(brandpayCustomer.getCustomerKey())
+                .methodKey(methodKey)
+                .accessToken(brandpayCustomer.getAccessToken())
+                .refreshToken(brandpayCustomer.getRefreshToken())
+                .tokenExpiresAt(brandpayCustomer.getTokenExpiresAt())
+                .build();
+
+    }
 }
