@@ -2,8 +2,11 @@ package com.pieceofcake.paymentservice.payment.presentation;
 
 import com.pieceofcake.paymentservice.common.entity.BaseResponseEntity;
 import com.pieceofcake.paymentservice.payment.application.PaymentService;
+import com.pieceofcake.paymentservice.payment.dto.in.ConfirmPaymentRequestDto;
 import com.pieceofcake.paymentservice.payment.dto.in.CreatePaymentRequestDto;
+import com.pieceofcake.paymentservice.payment.vo.in.ConfirmPaymentRequestVo;
 import com.pieceofcake.paymentservice.payment.vo.in.CreatePaymentRequestVo;
+import com.pieceofcake.paymentservice.payment.vo.out.ConfirmPaymentResponseVo;
 import com.pieceofcake.paymentservice.payment.vo.out.CreatePaymentResponseVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +24,18 @@ public class PaymentController {
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,
             @RequestBody CreatePaymentRequestVo createPaymentRequestVo
     ) {
-        log.info("$$$$$$$$$$$$ {}", createPaymentRequestVo);
         CreatePaymentResponseVo result = paymentService.createPayment(CreatePaymentRequestDto.from(
                 createPaymentRequestVo, memberUuid)).toVo();
         return new BaseResponseEntity<>(result);
+    }
+
+    @PostMapping("/confirm")
+    public BaseResponseEntity<ConfirmPaymentResponseVo> confirmPayment(
+            @RequestHeader(value = "X-Member-Uuid") String memberUuid,
+            @RequestBody ConfirmPaymentRequestVo confirmPaymentRequestVo
+            ) {
+
+        ConfirmPaymentResponseVo confirmPaymentResponseVo = paymentService.confirmPayment(ConfirmPaymentRequestDto.from(confirmPaymentRequestVo)).toVo();
+        return new BaseResponseEntity<>(confirmPaymentResponseVo);
     }
 }

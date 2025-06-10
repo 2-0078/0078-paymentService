@@ -27,14 +27,15 @@ public enum BaseResponseStatus {
     FAILED_TO_RESTORE(HttpStatus.INTERNAL_SERVER_ERROR, false, 405, "계정 복구에 실패했습니다. 관리자에게 문의해주세요."),
 
     /**
-     * 4000: users service error
+     * 4000: payment 에러
      */
     INVALID_CUSTOMER_KEY(HttpStatus.BAD_REQUEST, false, 4000, "유효하지 않은 고객 키입니다."),
     FAILED_TO_GET_TOSS_ACCESS_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, false, 4001, "Toss Payments 액세스 토큰을 가져오는 데 실패했습니다."),
     FAILED_TO_GET_TOSS_METHOD_KEY(HttpStatus.INTERNAL_SERVER_ERROR, false, 4002, "Toss Payments 결제 수단 키를 가져오는 데 실패했습니다."),
     NO_CUSTOMER_KEY(HttpStatus.BAD_REQUEST, false, 4003, "고객 키가 존재하지 않습니다."),
-
-
+    ALREADY_PAYMENT_DONE(HttpStatus.BAD_REQUEST, false, 4004, "이미 결제가 완료된 주문입니다."),
+    PAYMENT_CONFIRMATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, false, 4005, "toss 호출 중 HTTP 클라이언트 오류"),
+    PAYMENT_CONFIRMATION_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, false, 4006, "결제 확인 중 예외가 발생했습니다."),
 
 
 

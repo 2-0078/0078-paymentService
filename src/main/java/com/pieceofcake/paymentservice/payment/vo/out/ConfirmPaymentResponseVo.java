@@ -7,18 +7,27 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ConfirmPaymentResponseVo {
-    private Integer totalOriginPrice;
-    private Integer totalPurchasePrice;
+    private String paymentKey;
+    private String orderId;
+    private Long amount;
+    private String status;
     private String method;
-    private String orderName;
-    private String orderListUuid;
+    private String approvedAt;
 
     @Builder
-    public ConfirmPaymentResponseVo(Integer totalOriginPrice, Integer totalPurchasePrice, String method, String orderName, String orderListUuid) {
-        this.totalOriginPrice = totalOriginPrice;
-        this.totalPurchasePrice = totalPurchasePrice;
+    public ConfirmPaymentResponseVo(
+            String paymentKey,
+            String orderId,
+            Long amount,
+            String status,
+            String method,
+            String approvedAt
+    ) {
+        this.paymentKey = paymentKey;
+        this.orderId = orderId;
+        this.amount = amount;
+        this.status = status;
         this.method = method;
-        this.orderName = orderName;
-        this.orderListUuid = orderListUuid;
+        this.approvedAt = approvedAt;
     }
 }
