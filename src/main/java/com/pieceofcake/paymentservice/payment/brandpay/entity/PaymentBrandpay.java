@@ -1,6 +1,5 @@
 package com.pieceofcake.paymentservice.payment.brandpay.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pieceofcake.paymentservice.common.entity.BaseEntity;
 import com.pieceofcake.paymentservice.payment.brandpay.entity.enums.PaymentMethod;
 import com.pieceofcake.paymentservice.payment.brandpay.entity.enums.PaymentStatus;
@@ -14,9 +13,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@Table(name = "payment")
+@Table(name = "payment_brandpay")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment extends BaseEntity {
+public class PaymentBrandpay extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +41,7 @@ public class Payment extends BaseEntity {
     private LocalDateTime approvedAt;
 
     @Builder
-    public Payment(
+    public PaymentBrandpay(
             String paymentUuid,
             String paymentKey,
             PaymentMethod method,
