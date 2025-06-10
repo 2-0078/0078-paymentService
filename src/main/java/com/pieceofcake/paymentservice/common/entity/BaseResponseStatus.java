@@ -32,7 +32,7 @@ public enum BaseResponseStatus {
     INVALID_CUSTOMER_KEY(HttpStatus.BAD_REQUEST, false, 4000, "유효하지 않은 고객 키입니다."),
     FAILED_TO_GET_TOSS_ACCESS_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, false, 4001, "Toss Payments 액세스 토큰을 가져오는 데 실패했습니다."),
     FAILED_TO_GET_TOSS_METHOD_KEY(HttpStatus.INTERNAL_SERVER_ERROR, false, 4002, "Toss Payments 결제 수단 키를 가져오는 데 실패했습니다."),
-
+    NO_CUSTOMER_KEY(HttpStatus.BAD_REQUEST, false, 4003, "고객 키가 존재하지 않습니다."),
 
 
 
