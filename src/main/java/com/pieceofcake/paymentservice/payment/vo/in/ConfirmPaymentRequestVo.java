@@ -7,5 +7,5 @@ public class ConfirmPaymentRequestVo {
     private String paymentType;
     private String orderId;
     private String paymentKey;
-    private Integer amount;
+    private Long amount;
 }

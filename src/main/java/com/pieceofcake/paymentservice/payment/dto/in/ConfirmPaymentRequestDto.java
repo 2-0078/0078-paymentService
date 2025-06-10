@@ -11,10 +11,10 @@ public class ConfirmPaymentRequestDto {
     private String paymentType;
     private String orderId;
     private String paymentKey;
-    private Integer amount;
+    private Long amount;
 
     @Builder
-    public ConfirmPaymentRequestDto(String paymentType, String orderId, String paymentKey, Integer amount) {
+    public ConfirmPaymentRequestDto(String paymentType, String orderId, String paymentKey, Long amount) {
         this.paymentType = paymentType;
         this.orderId = orderId;
         this.paymentKey = paymentKey;

@@ -3,7 +3,6 @@ package com.pieceofcake.paymentservice.payment.dto.in;
 import com.pieceofcake.paymentservice.payment.entity.Payment;
 import com.pieceofcake.paymentservice.payment.entity.enums.PaymentStatus;
 import com.pieceofcake.paymentservice.payment.vo.in.CreatePaymentRequestVo;
-import com.pieceofcake.paymentservice.payment.vo.out.CreatePaymentResponseVo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +25,6 @@ public class CreatePaymentRequestDto {
     }
 
     public static CreatePaymentRequestDto from(CreatePaymentRequestVo createPaymentRequestVo, String memberUuid) {
-        log.info("##############{}" , createPaymentRequestVo.getAmount());
-        log.info("##############{}", createPaymentRequestVo.getOrderName());
         return CreatePaymentRequestDto.builder()
                 .amount(createPaymentRequestVo.getAmount())
                 .orderName(createPaymentRequestVo.getOrderName())
@@ -36,10 +33,6 @@ public class CreatePaymentRequestDto {
     }
 
     public Payment toEntity() {
-        log.info("@@@@@@@@@@@@@@@@ {}", this.amount);
-        log.info("@@@@@@@@@@@@@@@@ {}", this.memberUuid);
-        log.info("@@@@@@@@@@@@@@@@ {}", this.orderName);
-
         return Payment.builder()
                 .memberUuid(this.memberUuid)
                 .paymentUuid(UUID.randomUUID().toString())

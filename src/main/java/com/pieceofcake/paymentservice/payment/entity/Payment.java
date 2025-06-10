@@ -49,6 +49,7 @@ public class Payment {
 
     @Builder
     public Payment(
+            Long id,
             String memberUuid,
             String paymentUuid,
             String paymentCode,
@@ -59,6 +60,7 @@ public class Payment {
             String method,
             String orderName
     ) {
+        this.id = id;
         this.memberUuid = memberUuid;
         this.paymentUuid = paymentUuid;
         this.paymentCode = paymentCode;
