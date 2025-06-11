@@ -3,6 +3,9 @@ package com.pieceofcake.paymentservice.payment.application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.common.exception.BaseException;
+import com.pieceofcake.paymentservice.money.application.MoneyService;
+import com.pieceofcake.paymentservice.money.dto.CreateMoneyDto;
+import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
 import com.pieceofcake.paymentservice.payment.dto.in.ConfirmPaymentRequestDto;
 import com.pieceofcake.paymentservice.payment.dto.in.CreatePaymentRequestDto;
 import com.pieceofcake.paymentservice.payment.dto.out.ConfirmPaymentResponseDto;
@@ -38,6 +41,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     private final PaymentRepository paymentRepository;
     private final PaymentCustomerService paymentCustomerService;
+    private final MoneyService moneyService;
 
     @Override
     public CreatePaymentResponseDto createPayment(CreatePaymentRequestDto createPaymentRequestDto) {
@@ -107,6 +111,20 @@ public class PaymentServiceImpl implements PaymentService{
                     .build();
 
             paymentRepository.save(updatedPayment);
+
+            // money 테이블에 예치금 추가
+            CreateMoneyDto createMoneyDto = CreateMoneyDto.builder()
+                    .memberUuid(updatedPayment.getMemberUuid())
+                    .amount(updatedPayment.getAmount())
+                    .isPositive(true) // 예치금이므로 true
+                    .historyType(MoneyHistoryType.DEPOSIT)
+                    .paymentUuid(updatedPayment.getPaymentUuid())
+                    .paymentTime(responseBody.get("approvedAt") != null ? OffsetDateTime.parse((String) responseBody.get("approvedAt")).toLocalDateTime() : null)
+                    .paymentMethod(responseBody.get("method") != null ? (String) responseBody.get("method") : payment.getMethod())
+                    .paymentStatus(updatedPayment.getStatus().toString())
+                    .build();
+
+            moneyService.createMoney(createMoneyDto);
 
             // 응답 DTO 변환
 

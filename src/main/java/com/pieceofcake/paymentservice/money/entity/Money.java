@@ -1,16 +1,17 @@
 package com.pieceofcake.paymentservice.money.entity;
 
+import com.pieceofcake.paymentservice.common.entity.BaseEntity;
 import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "money_history")
+@Table(name = "money")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Money {
-
-
+public class Money extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 예치금내역ID
@@ -47,19 +48,13 @@ public class Money {
     private String accountHolderName; // 예금주명
 
     @Column(name = "payment_time")
-    private String paymentTime; // 결제 시기
+    private LocalDateTime paymentTime; // 결제 시기
 
     @Column(name = "payment_method")
     private String paymentMethod; // 결제 방법 (~PG)
 
     @Column(name = "payment_status")
     private String paymentStatus; // 결제 상태
-
-    @Column(name = "charged_amount")
-    private String chargedAmount; // 충전 금액
-
-    @Column(name = "withdrawn_amount")
-    private String withdrawnAmount; // 출금 금액
 
     @Builder
     public Money(
@@ -74,11 +69,9 @@ public class Money {
             String bankName,
             String accountNumber,
             String accountHolderName,
-            String paymentTime,
+            LocalDateTime paymentTime,
             String paymentMethod,
-            String paymentStatus,
-            String chargedAmount,
-            String withdrawnAmount
+            String paymentStatus
     ) {
         this.id = id;
         this.memberUuid = memberUuid;
@@ -94,7 +87,5 @@ public class Money {
         this.paymentTime = paymentTime;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
-        this.chargedAmount = chargedAmount;
-        this.withdrawnAmount = withdrawnAmount;
     }
 }

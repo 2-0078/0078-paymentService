@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class CreateMoneyDto {
@@ -19,11 +21,9 @@ public class CreateMoneyDto {
     private String bankName;
     private String accountNumber;
     private String accountHolderName;
-    private String paymentTime;
+    private LocalDateTime paymentTime;
     private String paymentMethod;
     private String paymentStatus;
-    private String chargedAmount;
-    private String withdrawnAmount;
 
     @Builder
     public CreateMoneyDto(
@@ -37,11 +37,9 @@ public class CreateMoneyDto {
             String bankName,
             String accountNumber,
             String accountHolderName,
-            String paymentTime,
+            LocalDateTime paymentTime,
             String paymentMethod,
-            String paymentStatus,
-            String chargedAmount,
-            String withdrawnAmount
+            String paymentStatus
     ) {
         this.id = id;
         this.memberUuid = memberUuid;
@@ -56,8 +54,6 @@ public class CreateMoneyDto {
         this.paymentTime = paymentTime;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
-        this.chargedAmount = chargedAmount;
-        this.withdrawnAmount = withdrawnAmount;
     }
 
     public Money toEntity(Long remainingMoney) {
@@ -76,8 +72,6 @@ public class CreateMoneyDto {
                 .paymentTime(paymentTime)
                 .paymentMethod(paymentMethod)
                 .paymentStatus(paymentStatus)
-                .chargedAmount(chargedAmount)
-                .withdrawnAmount(withdrawnAmount)
                 .build();
     }
 }
