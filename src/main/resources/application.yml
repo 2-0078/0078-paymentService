@@ -65,3 +65,11 @@ toss:
     redirect-url: https://your-backend.com/brandpay/callback   # ????? ?? ?? redirect ?????
     success-url: https://your-backend.com/brandpay/payment/success   # ?? ?? ???? (?? ????? ???)
     fail-url: https://your-backend.com/brandpay/payment/fail       # ?? ?? ????
+
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html

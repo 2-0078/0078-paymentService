@@ -4,6 +4,7 @@ import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.common.exception.BaseException;
 import com.pieceofcake.paymentservice.payment.entity.PaymentCustomer;
 import com.pieceofcake.paymentservice.payment.infrastructure.PaymentCustomerRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class PaymentCustomerServiceImpl implements PaymentCustomerService{
     private final PaymentCustomerRepository paymentCustomerRepository;
 
+    @Transactional
     @Override
     public String getCustomerKey(String memberUuid) {
         String customerKey;
