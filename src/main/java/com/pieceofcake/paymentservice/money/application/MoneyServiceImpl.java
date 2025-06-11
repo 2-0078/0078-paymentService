@@ -3,6 +3,8 @@ package com.pieceofcake.paymentservice.money.application;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.common.exception.BaseException;
 import com.pieceofcake.paymentservice.money.dto.CreateMoneyDto;
+import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyAmountRequestDto;
+import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyAmountResponseDto;
 import com.pieceofcake.paymentservice.money.entity.Money;
 import com.pieceofcake.paymentservice.money.infrastructure.MoneyRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,4 +38,14 @@ public class MoneyServiceImpl implements MoneyService{
 
         moneyRepository.save(money);
     }
+
+    @Override
+    public ReadMoneyAmountResponseDto readMoneyAmount(ReadMoneyAmountRequestDto readMoneyAmountRequestDto) {
+        Long remainingMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(readMoneyAmountRequestDto.getMemberUuid())
+                .map(Money::getRemainingMoney)
+                .orElse(0L);
+
+        return ReadMoneyAmountResponseDto.of(remainingMoney);
+    }
+
 }
