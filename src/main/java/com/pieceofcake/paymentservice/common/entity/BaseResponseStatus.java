@@ -36,7 +36,7 @@ public enum BaseResponseStatus {
     ALREADY_PAYMENT_DONE(HttpStatus.BAD_REQUEST, false, 4004, "이미 결제가 완료된 주문입니다."),
     PAYMENT_CONFIRMATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, false, 4005, "toss 호출 중 HTTP 클라이언트 오류"),
     PAYMENT_CONFIRMATION_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, false, 4006, "결제 확인 중 예외가 발생했습니다."),
-
+    NO_MONEY(HttpStatus.BAD_REQUEST, false, 4007, "잔액이 부족합니다."),
 
 
 
