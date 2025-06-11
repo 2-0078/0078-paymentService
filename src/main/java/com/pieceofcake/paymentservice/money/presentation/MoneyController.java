@@ -4,12 +4,15 @@ import com.pieceofcake.paymentservice.common.entity.BaseResponseEntity;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.money.application.MoneyService;
 import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyAmountRequestDto;
+import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyHistoryRequestDto;
+import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
+import com.pieceofcake.paymentservice.money.vo.in.ReadMoneyHistoryRequestVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyAmountResponseVo;
+import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyHistoryResponseVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/money")
@@ -22,11 +25,28 @@ public class MoneyController {
     public BaseResponseEntity<ReadMoneyAmountResponseVo> getMoney(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid
     ) {
-        ReadMoneyAmountResponseVo readMoneyAmountResponseVo = moneyService.readMoneyAmount(
+        ReadMoneyAmountResponseVo readMoneyAmountResponseVo = moneyService.readRemainingMoney(
                 ReadMoneyAmountRequestDto.of(memberUuid)).toVo();
 
         return new BaseResponseEntity<>(readMoneyAmountResponseVo);
     }
 
-    
+    @GetMapping("/history")
+    public BaseResponseEntity<List<ReadMoneyHistoryResponseVo>> getMoneyHistory(
+            @RequestHeader(value = "X-Member-Uuid") String memberUuid,
+            @RequestParam(value = "page", defaultValue = "0") int page
+    ) {
+        ReadMoneyHistoryRequestVo readMoneyHistoryRequestVo = ReadMoneyHistoryRequestVo.builder()
+                .memberUuid(memberUuid)
+                .page(page)
+                .build();
+
+        List<ReadMoneyHistoryResponseVo> result = moneyService
+                .readMoneyHistory(ReadMoneyHistoryRequestDto.from(readMoneyHistoryRequestVo))
+                .stream()
+                .map(ReadMoneyHistoryResponseDto::toVo)
+                .toList();
+
+        return new BaseResponseEntity<>(result);
+    }
 }
