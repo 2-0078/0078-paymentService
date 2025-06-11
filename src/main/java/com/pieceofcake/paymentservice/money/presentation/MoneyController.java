@@ -11,6 +11,7 @@ import com.pieceofcake.paymentservice.money.vo.in.ReadMoneyHistoryRequestVo;
 import com.pieceofcake.paymentservice.money.vo.in.WithdrawMoneyRequestVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyAmountResponseVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyHistoryResponseVo;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class MoneyController {
 
     private final MoneyService moneyService;
 
+    @Operation(summary = "remain money READ API", description = "현재 잔여금액 조회 API 입니다.")
     @GetMapping()
     public BaseResponseEntity<ReadMoneyAmountResponseVo> getMoney(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid
@@ -33,6 +35,7 @@ public class MoneyController {
         return new BaseResponseEntity<>(readMoneyAmountResponseVo);
     }
 
+    @Operation(summary = "money history READ API", description = "Money List 페이지네이션 조회 API 입니다.")
     @GetMapping("/history")
     public BaseResponseEntity<List<ReadMoneyHistoryResponseVo>> getMoneyHistory(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,
@@ -52,6 +55,7 @@ public class MoneyController {
         return new BaseResponseEntity<>(result);
     }
 
+    @Operation(summary = "withdraw API", description = "출금 API 입니다.")
     @PostMapping("/withdraw")
     public BaseResponseEntity<Void> withdrawMoney(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,

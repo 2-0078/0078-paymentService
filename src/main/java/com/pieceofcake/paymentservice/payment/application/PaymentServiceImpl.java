@@ -13,6 +13,7 @@ import com.pieceofcake.paymentservice.payment.dto.out.CreatePaymentResponseDto;
 import com.pieceofcake.paymentservice.payment.entity.Payment;
 import com.pieceofcake.paymentservice.payment.entity.enums.PaymentStatus;
 import com.pieceofcake.paymentservice.payment.infrastructure.PaymentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,7 @@ public class PaymentServiceImpl implements PaymentService{
     private final PaymentCustomerService paymentCustomerService;
     private final MoneyService moneyService;
 
+    @Transactional
     @Override
     public CreatePaymentResponseDto createPayment(CreatePaymentRequestDto createPaymentRequestDto) {
 
@@ -57,6 +59,7 @@ public class PaymentServiceImpl implements PaymentService{
         return CreatePaymentResponseDto.from(payment, customerKey);
     }
 
+    @Transactional
     @Override
     public ConfirmPaymentResponseDto confirmPayment(ConfirmPaymentRequestDto confirmPaymentRequestDto) {
         String url = baseUrl + "/v1/payments/confirm";
@@ -146,7 +149,5 @@ public class PaymentServiceImpl implements PaymentService{
             System.err.println("결제 승인 중 예외 발생%%%%: " + e.getMessage());
             throw new BaseException(BaseResponseStatus.PAYMENT_CONFIRMATION_EXCEPTION);
         }
-
-
     }
 }

@@ -11,6 +11,7 @@ import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
 import com.pieceofcake.paymentservice.money.entity.Money;
 import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
 import com.pieceofcake.paymentservice.money.infrastructure.MoneyRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -28,9 +29,9 @@ public class MoneyServiceImpl implements MoneyService{
 
     int PAGE_SIZE = 10;
 
+    @Transactional
     @Override
     public void createMoney(CreateMoneyDto createMoneyDto) {
-        log.info("############ {}", createMoneyDto);
         String memberUuid = createMoneyDto.getMemberUuid();
         // 기존 돈이 있는지 조회
         Optional<Money> oldMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(memberUuid);
@@ -74,6 +75,7 @@ public class MoneyServiceImpl implements MoneyService{
                 .toList();
     }
 
+    @Transactional
     @Override
     public void withdrawMoney(WithdrawMoneyRequestDto withdrawMoneyRequestDto) {
         // createMoneyDto build 후 createMoney 호출

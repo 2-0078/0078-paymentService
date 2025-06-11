@@ -8,6 +8,7 @@ import com.pieceofcake.paymentservice.payment.vo.in.ConfirmPaymentRequestVo;
 import com.pieceofcake.paymentservice.payment.vo.in.CreatePaymentRequestVo;
 import com.pieceofcake.paymentservice.payment.vo.out.ConfirmPaymentResponseVo;
 import com.pieceofcake.paymentservice.payment.vo.out.CreatePaymentResponseVo;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
     private final PaymentService paymentService;
 
+    @Operation(summary = "payment CREATE API", description = "결제 요청 api 입니다.")
     @PostMapping("/create")
     public BaseResponseEntity<CreatePaymentResponseVo> addPayment(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,
@@ -29,6 +31,7 @@ public class PaymentController {
         return new BaseResponseEntity<>(result);
     }
 
+    @Operation(summary = "payment CONFIRM API", description = "결제 확인(toss) api 입니다.")
     @PostMapping("/confirm")
     public BaseResponseEntity<ConfirmPaymentResponseVo> confirmPayment(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,
