@@ -5,9 +5,10 @@ import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
-
+@ToString
 @Getter
 @NoArgsConstructor
 public class CreateMoneyDto {

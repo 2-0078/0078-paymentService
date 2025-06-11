@@ -5,8 +5,10 @@ import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.money.application.MoneyService;
 import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyAmountRequestDto;
 import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyHistoryRequestDto;
+import com.pieceofcake.paymentservice.money.dto.in.WithdrawMoneyRequestDto;
 import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
 import com.pieceofcake.paymentservice.money.vo.in.ReadMoneyHistoryRequestVo;
+import com.pieceofcake.paymentservice.money.vo.in.WithdrawMoneyRequestVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyAmountResponseVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyHistoryResponseVo;
 import lombok.RequiredArgsConstructor;
@@ -49,4 +51,15 @@ public class MoneyController {
 
         return new BaseResponseEntity<>(result);
     }
+
+    @PostMapping("/withdraw")
+    public BaseResponseEntity<Void> withdrawMoney(
+            @RequestHeader(value = "X-Member-Uuid") String memberUuid,
+            @RequestBody WithdrawMoneyRequestVo withdrawMoneyRequestVo
+            ) {
+
+        moneyService.withdrawMoney(WithdrawMoneyRequestDto.from(withdrawMoneyRequestVo, memberUuid));
+        return new BaseResponseEntity<>(BaseResponseStatus.SUCCESS);
+    }
+
 }
