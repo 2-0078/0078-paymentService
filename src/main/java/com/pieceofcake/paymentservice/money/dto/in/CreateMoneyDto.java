@@ -1,4 +1,4 @@
-package com.pieceofcake.paymentservice.money.dto;
+package com.pieceofcake.paymentservice.money.dto.in;
 
 import com.pieceofcake.paymentservice.money.entity.Money;
 import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
