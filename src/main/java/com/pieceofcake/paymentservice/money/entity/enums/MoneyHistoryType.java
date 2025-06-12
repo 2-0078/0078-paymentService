@@ -10,10 +10,10 @@ public enum MoneyHistoryType {
     WITHDRAWAL("출금"),
     SELL("판매"),
     REFUND("환불"),
-    FRACTION_BUY("조각 매수"),
-    FRACTION_SELL("조각 매도"),
-    PUBLIC_OFFERING("공모"),
-    SERVICE_FEE("수수료"),
+    PIECE_BUY("조각 매수"),
+    PIECE_SELL("조각 매도"),
+    FUNDING("공모"),
+    FEE("수수료"),
     PROFIT("배당금"),
     DEPOSIT_COLLATERAL("보증금");
 
