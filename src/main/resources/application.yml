@@ -3,14 +3,12 @@ server:
   forward-headers-strategy: framework
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: payment-service
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/piece_of_cake_local
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
+  profiles:
+    active: dev
 
   jpa:
     hibernate:
@@ -20,15 +18,6 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
-
-  redis:
-    host: localhost
-    port: 6379
-    username: redis123
-    password: 1234
-
-  config:
-    import: optional:file:.env[.properties]
 
 #  kafka:
 #    bootstrap-servers: localhost:10000,localhost:10001,localhost:10002
@@ -48,13 +37,6 @@ spring:
 #      max-poll-records: 100
 #      auto-offset-reset: earliest
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-
 toss:
   payments:
     base-url: https://api.tosspayments.com    # Toss Payments API ?? URL
@@ -65,7 +47,6 @@ toss:
     redirect-url: https://your-backend.com/brandpay/callback   # ????? ?? ?? redirect ?????
     success-url: https://your-backend.com/brandpay/payment/success   # ?? ?? ???? (?? ????? ???)
     fail-url: https://your-backend.com/brandpay/payment/fail       # ?? ?? ????
-
 
 springdoc:
   api-docs:
