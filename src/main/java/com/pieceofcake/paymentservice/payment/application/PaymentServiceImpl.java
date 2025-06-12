@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.common.exception.BaseException;
 import com.pieceofcake.paymentservice.money.application.MoneyService;
-import com.pieceofcake.paymentservice.money.dto.CreateMoneyDto;
+import com.pieceofcake.paymentservice.money.dto.in.CreateMoneyRequestDto;
 import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
 import com.pieceofcake.paymentservice.payment.dto.in.ConfirmPaymentRequestDto;
 import com.pieceofcake.paymentservice.payment.dto.in.CreatePaymentRequestDto;
@@ -116,7 +116,7 @@ public class PaymentServiceImpl implements PaymentService{
             paymentRepository.save(updatedPayment);
 
             // money 테이블에 예치금 추가
-            CreateMoneyDto createMoneyDto = CreateMoneyDto.builder()
+            CreateMoneyRequestDto createMoneyDto = CreateMoneyRequestDto.builder()
                     .memberUuid(updatedPayment.getMemberUuid())
                     .amount(updatedPayment.getAmount())
                     .isPositive(true) // 예치금이므로 true

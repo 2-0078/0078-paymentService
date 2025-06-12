@@ -3,10 +3,12 @@ package com.pieceofcake.paymentservice.money.presentation;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseEntity;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.money.application.MoneyService;
+import com.pieceofcake.paymentservice.money.dto.in.CreateMoneyRequestDto;
 import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyAmountRequestDto;
 import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyHistoryRequestDto;
 import com.pieceofcake.paymentservice.money.dto.in.WithdrawMoneyRequestDto;
 import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
+import com.pieceofcake.paymentservice.money.vo.in.CreateMoneyRequestVo;
 import com.pieceofcake.paymentservice.money.vo.in.ReadMoneyHistoryRequestVo;
 import com.pieceofcake.paymentservice.money.vo.in.WithdrawMoneyRequestVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyAmountResponseVo;
@@ -55,13 +57,22 @@ public class MoneyController {
         return new BaseResponseEntity<>(result);
     }
 
+    @Operation(summary = "createMoney API", description = "결제 API")
+    @PostMapping
+    public BaseResponseEntity<Void> createMoney(
+            @RequestHeader(value = "X-Member-Uuid") String memberUuid,
+            @RequestBody CreateMoneyRequestVo createMoneyRequestVo
+    ){
+        moneyService.createMoney(CreateMoneyRequestDto.from(createMoneyRequestVo, memberUuid));
+        return new BaseResponseEntity<>(BaseResponseStatus.SUCCESS);
+    }
+
     @Operation(summary = "withdraw API", description = "출금 API 입니다.")
     @PostMapping("/withdraw")
     public BaseResponseEntity<Void> withdrawMoney(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,
             @RequestBody WithdrawMoneyRequestVo withdrawMoneyRequestVo
             ) {
-
         moneyService.withdrawMoney(WithdrawMoneyRequestDto.from(withdrawMoneyRequestVo, memberUuid));
         return new BaseResponseEntity<>(BaseResponseStatus.SUCCESS);
     }

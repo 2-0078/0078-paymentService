@@ -2,10 +2,7 @@ package com.pieceofcake.paymentservice.money.application;
 
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.common.exception.BaseException;
-import com.pieceofcake.paymentservice.money.dto.CreateMoneyDto;
-import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyAmountRequestDto;
-import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyHistoryRequestDto;
-import com.pieceofcake.paymentservice.money.dto.in.WithdrawMoneyRequestDto;
+import com.pieceofcake.paymentservice.money.dto.in.*;
 import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyAmountResponseDto;
 import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
 import com.pieceofcake.paymentservice.money.entity.Money;
@@ -31,7 +28,7 @@ public class MoneyServiceImpl implements MoneyService{
 
     @Transactional
     @Override
-    public void createMoney(CreateMoneyDto createMoneyDto) {
+    public void createMoney(CreateMoneyRequestDto createMoneyDto) {
         String memberUuid = createMoneyDto.getMemberUuid();
         // 기존 돈이 있는지 조회
         Optional<Money> oldMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(memberUuid);
@@ -78,8 +75,9 @@ public class MoneyServiceImpl implements MoneyService{
     @Transactional
     @Override
     public void withdrawMoney(WithdrawMoneyRequestDto withdrawMoneyRequestDto) {
-        // createMoneyDto build 후 createMoney 호출
-        CreateMoneyDto createMoneyDto = CreateMoneyDto.builder()
+        // CreateMoneyRequestDto build 후 createMoney 호출
+
+        createMoney(CreateMoneyRequestDto.builder()
                 .memberUuid(withdrawMoneyRequestDto.getMemberUuid())
                 .amount(withdrawMoneyRequestDto.getAmount())
                 .isPositive(false) // 출금이므로 false
@@ -87,9 +85,7 @@ public class MoneyServiceImpl implements MoneyService{
                 .bankName(withdrawMoneyRequestDto.getBank())
                 .accountNumber(withdrawMoneyRequestDto.getAccountNumber())
                 .accountHolderName(withdrawMoneyRequestDto.getAccountHolderName())
-                .build();
-
-        createMoney(createMoneyDto);
+                .build());
 
         // 이제 이 내역을 관리자에게 전달하면 됩니다.
     }
