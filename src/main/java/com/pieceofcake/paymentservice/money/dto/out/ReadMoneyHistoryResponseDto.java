@@ -15,6 +15,7 @@ public class ReadMoneyHistoryResponseDto {
     private Boolean isPositive;
     private String historyType;
     private Long remainingMoney;
+    private Long FrozenMoney;
     private String moneyHistoryDetail;
     private LocalDateTime createdAt;
 
@@ -24,6 +25,7 @@ public class ReadMoneyHistoryResponseDto {
             Boolean isPositive,
             String historyType,
             Long remainingMoney,
+            Long frozenMoney,
             String moneyHistoryDetail,
             LocalDateTime createdAt
     ) {
@@ -31,6 +33,7 @@ public class ReadMoneyHistoryResponseDto {
         this.isPositive = isPositive;
         this.historyType = historyType;
         this.remainingMoney = remainingMoney;
+        this.FrozenMoney = frozenMoney;
         this.moneyHistoryDetail = moneyHistoryDetail;
         this.createdAt = createdAt;
     }
@@ -41,6 +44,7 @@ public class ReadMoneyHistoryResponseDto {
                 .isPositive(money.getIsPositive())
                 .historyType(money.getHistoryType().name())
                 .remainingMoney(money.getRemainingMoney())
+                .frozenMoney(money.getFrozenMoney())
                 .moneyHistoryDetail(money.getMoneyHistoryDetail())
                 .createdAt(money.getCreatedAt())
                 .build();

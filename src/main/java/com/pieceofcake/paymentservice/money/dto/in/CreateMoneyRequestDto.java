@@ -71,7 +71,7 @@ public class CreateMoneyRequestDto {
                 .build();
     }
 
-    public Money toEntity(Long newRemainingMoney){
+    public Money toEntity(Long newRemainingMoney, Long newFrozenMoney) {
         return Money.builder()
                 .memberUuid(memberUuid)
                 .amount(amount)
@@ -82,6 +82,7 @@ public class CreateMoneyRequestDto {
                 .accountNumber(accountNumber)
                 .accountHolderName(accountHolderName)
                 .remainingMoney(newRemainingMoney)
+                .frozenMoney(newFrozenMoney)
                 .paymentUuid(paymentUuid)
                 .paymentTime(paymentTime)
                 .paymentMethod(paymentMethod)

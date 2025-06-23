@@ -13,6 +13,7 @@ public class ReadMoneyHistoryResponseVo {
     private Boolean isPositive;
     private String historyType;
     private Long remainingMoney;
+    private Long frozenMoney;
     private String moneyHistoryDetail;
     private LocalDateTime createdAt;
 
@@ -22,6 +23,7 @@ public class ReadMoneyHistoryResponseVo {
             Boolean isPositive,
             String historyType,
             Long remainingMoney,
+            Long frozenMoney,
             String moneyHistoryDetail,
             LocalDateTime createdAt
     ) {
@@ -29,6 +31,7 @@ public class ReadMoneyHistoryResponseVo {
         this.isPositive = isPositive;
         this.historyType = historyType;
         this.remainingMoney = remainingMoney;
+        this.frozenMoney = frozenMoney;
         this.moneyHistoryDetail = moneyHistoryDetail;
         this.createdAt = createdAt;
     }

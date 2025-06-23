@@ -26,12 +26,12 @@ public class MoneyController {
 
     private final MoneyService moneyService;
 
-    @Operation(summary = "remain money READ API", description = "현재 잔여금액 조회 API 입니다.")
+    @Operation(summary = "remain money READ API", description = "현재 사용가능 금액 조회 API 입니다.")
     @GetMapping()
-    public BaseResponseEntity<ReadMoneyAmountResponseVo> getMoney(
+    public BaseResponseEntity<ReadMoneyAmountResponseVo> getUsableMoney(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid
     ) {
-        ReadMoneyAmountResponseVo readMoneyAmountResponseVo = moneyService.readRemainingMoney(
+        ReadMoneyAmountResponseVo readMoneyAmountResponseVo = moneyService.readUsableMoney(
                 ReadMoneyAmountRequestDto.of(memberUuid)).toVo();
 
         return new BaseResponseEntity<>(readMoneyAmountResponseVo);
