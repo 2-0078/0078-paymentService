@@ -15,7 +15,7 @@ public enum MoneyHistoryType {
     FUNDING("공모"),
     FEE("수수료"),
     PROFIT("배당금"),
-    DEPOSIT_COLLATERAL("보증금");
+    FREEZE("보증금");
 
     private final String label;
 

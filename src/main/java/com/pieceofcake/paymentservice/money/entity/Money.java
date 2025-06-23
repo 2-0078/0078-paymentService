@@ -32,6 +32,9 @@ public class Money extends BaseEntity {
     @Column(name = "remaining_money", nullable = false)
     private Long remainingMoney; // 잔여금액
 
+    @Column(name = "frozen_money", nullable = false)
+    private Long frozenMoney; // 동결금액 (보증금)
+
     @Column(name = "money_history_detail")
     private String moneyHistoryDetail; // 상세정보
 
@@ -64,6 +67,7 @@ public class Money extends BaseEntity {
             Boolean isPositive,
             MoneyHistoryType historyType,
             Long remainingMoney,
+            Long frozenMoney,
             String moneyHistoryDetail,
             String paymentUuid,
             String bankName,
@@ -79,6 +83,7 @@ public class Money extends BaseEntity {
         this.isPositive = isPositive;
         this.historyType = historyType;
         this.remainingMoney = remainingMoney;
+        this.frozenMoney = frozenMoney;
         this.moneyHistoryDetail = moneyHistoryDetail;
         this.paymentUuid = paymentUuid;
         this.bankName = bankName;

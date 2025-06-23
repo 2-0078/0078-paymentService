@@ -28,34 +28,57 @@ public class MoneyServiceImpl implements MoneyService{
 
     @Transactional
     @Override
-    public void createMoney(CreateMoneyRequestDto createMoneyDto) {
-        String memberUuid = createMoneyDto.getMemberUuid();
+    public void createMoney(CreateMoneyRequestDto createMoneyRequestDto) {
+        String memberUuid = createMoneyRequestDto.getMemberUuid();
         // 기존 돈이 있는지 조회
         Optional<Money> oldMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(memberUuid);
-        Long oldRemainingMoney = oldMoney.isPresent() ? oldMoney.get().getRemainingMoney() : 0;
-        Long newRemainingMoney;
-        if (createMoneyDto.getIsPositive()) {
-            newRemainingMoney = oldRemainingMoney + createMoneyDto.getAmount();
+        Long remainingMoney = oldMoney.isPresent() ? oldMoney.get().getRemainingMoney() : 0L;
+        Long frozenMoney = oldMoney.isPresent() ? oldMoney.get().getFrozenMoney() : 0L;
+
+        if (createMoneyRequestDto.getHistoryType() == MoneyHistoryType.FREEZE) {
+            if (createMoneyRequestDto.getIsPositive()) {
+                // 금액 동결 처리
+                frozenMoney += createMoneyRequestDto.getAmount();
+                if (frozenMoney > remainingMoney) {
+                    // 동결 금액이 잔액을 초과하는 경우 예외 처리
+                    throw new BaseException(BaseResponseStatus.FROZEN_MONEY_EXCEED);
+                }
+            } else {
+                // 동결 해제 처리
+                frozenMoney -= createMoneyRequestDto.getAmount();
+                if (frozenMoney < 0) {
+                    // 동결 해제 금액이 동결된 금액보다 큰 경우 예외 처리
+                    throw new BaseException(BaseResponseStatus.FROZEN_MONEY_NOT_ENOUGH);
+                }
+            }
         } else {
-            newRemainingMoney = oldRemainingMoney - createMoneyDto.getAmount();
-            // 잔액이 부족한 경우 예외 처리
-            if (newRemainingMoney < 0) {
-                throw new BaseException(BaseResponseStatus.NO_MONEY);
+            if (createMoneyRequestDto.getIsPositive()) {
+                // 입금 처리
+                remainingMoney += createMoneyRequestDto.getAmount();
+            } else {
+                remainingMoney -= createMoneyRequestDto.getAmount();
+                // 잔액이 부족한 경우 예외 처리
+                if (remainingMoney < 0) {
+                    throw new BaseException(BaseResponseStatus.TOO_LESS_MONEY);
+                }
             }
         }
 
-        Money money = createMoneyDto.toEntity(newRemainingMoney);
+
+        Money money = createMoneyRequestDto.toEntity(remainingMoney, frozenMoney);
 
         moneyRepository.save(money);
     }
 
     @Override
-    public ReadMoneyAmountResponseDto readRemainingMoney(ReadMoneyAmountRequestDto readMoneyAmountRequestDto) {
-        Long remainingMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(readMoneyAmountRequestDto.getMemberUuid())
-                .map(Money::getRemainingMoney)
+    public ReadMoneyAmountResponseDto readUsableMoney(ReadMoneyAmountRequestDto readMoneyAmountRequestDto) {
+        // money가 하나라도 있으면 최신 값 반환. 없으면 0L 반환
+        Long usableMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(
+                        readMoneyAmountRequestDto.getMemberUuid()
+                ).map(money -> money.getRemainingMoney() - money.getFrozenMoney())
                 .orElse(0L);
 
-        return ReadMoneyAmountResponseDto.of(remainingMoney);
+        return ReadMoneyAmountResponseDto.of(usableMoney);
     }
 
     @Override
