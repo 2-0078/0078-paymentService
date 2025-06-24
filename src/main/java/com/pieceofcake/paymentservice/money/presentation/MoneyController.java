@@ -5,6 +5,7 @@ import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.money.application.MoneyService;
 import com.pieceofcake.paymentservice.money.dto.in.*;
 import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
+import com.pieceofcake.paymentservice.money.entity.enums.MoneyHistoryType;
 import com.pieceofcake.paymentservice.money.vo.in.*;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyAmountResponseVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyHistoryResponseVo;
@@ -32,15 +33,21 @@ public class MoneyController {
         return new BaseResponseEntity<>(readMoneyAmountResponseVo);
     }
 
-    @Operation(summary = "money history READ API", description = "Money List 페이지네이션 조회 API 입니다.")
+    @Operation(summary = "money history READ API", description = "Money List 페이지네이션 + 필터링 조회 API 입니다.")
     @GetMapping("/history")
     public BaseResponseEntity<List<ReadMoneyHistoryResponseVo>> getMoneyHistory(
             @RequestHeader(value = "X-Member-Uuid") String memberUuid,
-            @RequestParam(value = "page", defaultValue = "0") int page
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "isPositive", required = false) Boolean isPositive,
+            @RequestParam(value = "historyType", required = false) MoneyHistoryType historyType,
+            @RequestParam(value = "period", defaultValue = "ALL") String period
     ) {
         ReadMoneyHistoryRequestVo readMoneyHistoryRequestVo = ReadMoneyHistoryRequestVo.builder()
                 .memberUuid(memberUuid)
                 .page(page)
+                .isPositive(isPositive)
+                .historyType(historyType)
+                .period(period)
                 .build();
 
         List<ReadMoneyHistoryResponseVo> result = moneyService
