@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface MoneyService {
     void createMoney(CreateMoneyRequestDto createMoneyDto);
+    void createMoneyWithMemberUuid(CreateMoneyWithMemberUuidRequestDto createMoneyWithMemberUuidRequestDto);
     ReadMoneyAmountResponseDto readUsableMoney(ReadMoneyAmountRequestDto readMoneyAmountRequestDto);
     List<ReadMoneyHistoryResponseDto> readMoneyHistory(ReadMoneyHistoryRequestDto readMoneyHistoryRequestDto);
     void withdrawMoney(WithdrawMoneyRequestDto withdrawMoneyRequestDto);

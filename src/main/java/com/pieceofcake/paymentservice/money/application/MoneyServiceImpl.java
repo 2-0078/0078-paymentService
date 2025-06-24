@@ -36,6 +36,7 @@ public class MoneyServiceImpl implements MoneyService{
         Long frozenMoney = oldMoney.isPresent() ? oldMoney.get().getFrozenMoney() : 0L;
 
         if (createMoneyRequestDto.getHistoryType() == MoneyHistoryType.FREEZE) {
+            // 보증금 관련 create
             if (createMoneyRequestDto.getIsPositive()) {
                 // 금액 동결 처리
                 frozenMoney += createMoneyRequestDto.getAmount();
@@ -51,7 +52,22 @@ public class MoneyServiceImpl implements MoneyService{
                     throw new BaseException(BaseResponseStatus.FROZEN_MONEY_NOT_ENOUGH);
                 }
             }
+        } else if (createMoneyRequestDto.getHistoryType() == MoneyHistoryType.PRODUCT_BUY) {
+            // 상품 구매 관련 create
+            if (createMoneyRequestDto.getIsPositive()) {
+                // 상품 구매 금액 환불 처리
+                remainingMoney += createMoneyRequestDto.getAmount();
+            } else {
+                // 상품 구매 처리
+                remainingMoney -= createMoneyRequestDto.getAmount();
+                frozenMoney -= createMoneyRequestDto.getAmount();
+                // 잔액이 부족한 경우 예외 처리
+                if (remainingMoney < 0) {
+                    throw new BaseException(BaseResponseStatus.TOO_LESS_MONEY);
+                }
+            }
         } else {
+            // 입출금 관련 create
             if (createMoneyRequestDto.getIsPositive()) {
                 // 입금 처리
                 remainingMoney += createMoneyRequestDto.getAmount();
@@ -68,6 +84,17 @@ public class MoneyServiceImpl implements MoneyService{
         Money money = createMoneyRequestDto.toEntity(remainingMoney, frozenMoney);
 
         moneyRepository.save(money);
+    }
+
+    public void createMoneyWithMemberUuid(CreateMoneyWithMemberUuidRequestDto createMoneyWithMemberUuidRequestDto) {
+        // CreateMoneyRequestDto build 후 createMoney 호출
+        createMoney(CreateMoneyRequestDto.builder()
+                .memberUuid(createMoneyWithMemberUuidRequestDto.getMemberUuid())
+                .amount(createMoneyWithMemberUuidRequestDto.getAmount())
+                .isPositive(createMoneyWithMemberUuidRequestDto.getIsPositive())
+                .historyType(createMoneyWithMemberUuidRequestDto.getHistoryType())
+                .moneyHistoryDetail(createMoneyWithMemberUuidRequestDto.getMoneyHistoryDetail())
+                .build());
     }
 
     @Override

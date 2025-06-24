@@ -3,14 +3,9 @@ package com.pieceofcake.paymentservice.money.presentation;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseEntity;
 import com.pieceofcake.paymentservice.common.entity.BaseResponseStatus;
 import com.pieceofcake.paymentservice.money.application.MoneyService;
-import com.pieceofcake.paymentservice.money.dto.in.CreateMoneyRequestDto;
-import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyAmountRequestDto;
-import com.pieceofcake.paymentservice.money.dto.in.ReadMoneyHistoryRequestDto;
-import com.pieceofcake.paymentservice.money.dto.in.WithdrawMoneyRequestDto;
+import com.pieceofcake.paymentservice.money.dto.in.*;
 import com.pieceofcake.paymentservice.money.dto.out.ReadMoneyHistoryResponseDto;
-import com.pieceofcake.paymentservice.money.vo.in.CreateMoneyRequestVo;
-import com.pieceofcake.paymentservice.money.vo.in.ReadMoneyHistoryRequestVo;
-import com.pieceofcake.paymentservice.money.vo.in.WithdrawMoneyRequestVo;
+import com.pieceofcake.paymentservice.money.vo.in.*;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyAmountResponseVo;
 import com.pieceofcake.paymentservice.money.vo.out.ReadMoneyHistoryResponseVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +59,15 @@ public class MoneyController {
             @RequestBody CreateMoneyRequestVo createMoneyRequestVo
     ){
         moneyService.createMoney(CreateMoneyRequestDto.from(createMoneyRequestVo, memberUuid));
+        return new BaseResponseEntity<>(BaseResponseStatus.SUCCESS);
+    }
+
+    @Operation(summary = "createMoneyWithMemberUuid API", description = "결제 with memberUuid API")
+    @PostMapping("/with-member-uuid")
+    public BaseResponseEntity<Void> createMoney(
+            @RequestBody CreateMoneyWithMemberUuidRequestVo createMoneyWithMemberUuidRequestVo
+    ){
+        moneyService.createMoneyWithMemberUuid(CreateMoneyWithMemberUuidRequestDto.from(createMoneyWithMemberUuidRequestVo));
         return new BaseResponseEntity<>(BaseResponseStatus.SUCCESS);
     }
 
