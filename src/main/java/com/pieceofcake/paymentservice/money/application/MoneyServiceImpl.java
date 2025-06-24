@@ -113,10 +113,7 @@ public class MoneyServiceImpl implements MoneyService{
         int page = Math.max(0, readMoneyHistoryRequestDto.getPage());
         Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("createdAt").descending());
 
-        return moneyRepository.findAllByMemberUuid(
-                    readMoneyHistoryRequestDto.getMemberUuid(),
-                    pageable
-                )
+        return moneyRepository.getMoneyHistoryByFilters(readMoneyHistoryRequestDto, pageable)
                 .stream()
                 .map(ReadMoneyHistoryResponseDto::from)
                 .toList();
