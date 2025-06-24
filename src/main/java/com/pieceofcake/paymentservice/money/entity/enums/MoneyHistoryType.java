@@ -15,6 +15,7 @@ public enum MoneyHistoryType {
     FUNDING("공모"),
     FEE("수수료"),
     PROFIT("배당금"),
+    PRODUCT_BUY("상품 구매"),
     FREEZE("보증금");
 
     private final String label;
