@@ -111,7 +111,7 @@ public class MoneyServiceImpl implements MoneyService{
     @Override
     public List<ReadMoneyHistoryResponseDto> readMoneyHistory(ReadMoneyHistoryRequestDto readMoneyHistoryRequestDto) {
         int page = Math.max(0, readMoneyHistoryRequestDto.getPage());
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("id").descending());
 
         return moneyRepository.getMoneyHistoryByFilters(readMoneyHistoryRequestDto, pageable)
                 .stream()
