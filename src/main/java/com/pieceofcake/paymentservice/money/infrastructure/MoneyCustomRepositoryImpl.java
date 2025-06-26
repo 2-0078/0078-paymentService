@@ -64,10 +64,9 @@ public class MoneyCustomRepositoryImpl implements MoneyCustomRepository {
         List<Money> results = jpaQueryFactory
                 .selectFrom(money)
                 .where(builder)
-                .orderBy(money.createdAt.desc())
+                .orderBy(money.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(money.createdAt.desc())
                 .fetch();
 
         // ✅ 카운트 쿼리

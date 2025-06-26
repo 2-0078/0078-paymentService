@@ -56,6 +56,7 @@ public class ReadMoneyHistoryResponseDto {
                 .isPositive(isPositive)
                 .historyType(historyType)
                 .remainingMoney(remainingMoney)
+                .frozenMoney(FrozenMoney)
                 .moneyHistoryDetail(moneyHistoryDetail)
                 .createdAt(createdAt)
                 .build();
