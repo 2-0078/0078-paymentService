@@ -37,7 +37,7 @@ public class MoneyServiceImpl implements MoneyService{
 
         if (createMoneyRequestDto.getHistoryType() == MoneyHistoryType.FREEZE) {
             // 보증금 관련 create
-            if (createMoneyRequestDto.getIsPositive()) {
+            if (!createMoneyRequestDto.getIsPositive()) {
                 // 금액 동결 처리
                 frozenMoney += createMoneyRequestDto.getAmount();
                 if (frozenMoney > remainingMoney) {
