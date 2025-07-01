@@ -11,6 +11,7 @@ import com.pieceofcake.paymentservice.money.infrastructure.MoneyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,15 +24,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MoneyServiceImpl implements MoneyService{
     private final MoneyRepository moneyRepository;
+    private final ApplicationContext applicationContext;
 
     int PAGE_SIZE = 10;
 
-    @Transactional
     @Override
+    @Transactional
     public void createMoney(CreateMoneyRequestDto createMoneyRequestDto) {
         String memberUuid = createMoneyRequestDto.getMemberUuid();
         // 기존 돈이 있는지 조회
-        Optional<Money> oldMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(memberUuid);
+        Optional<Money> oldMoney = moneyRepository.findFirstByMemberUuidOrderByIdDesc(memberUuid);
         Long remainingMoney = oldMoney.isPresent() ? oldMoney.get().getRemainingMoney() : 0L;
         Long frozenMoney = oldMoney.isPresent() ? oldMoney.get().getFrozenMoney() : 0L;
 
@@ -47,10 +49,6 @@ public class MoneyServiceImpl implements MoneyService{
             } else {
                 // 동결 해제 처리
                 frozenMoney -= createMoneyRequestDto.getAmount();
-                if (frozenMoney < 0) {
-                    // 동결 해제 금액이 동결된 금액보다 큰 경우 예외 처리
-                    throw new BaseException(BaseResponseStatus.FROZEN_MONEY_NOT_ENOUGH);
-                }
             }
         } else if (createMoneyRequestDto.getHistoryType() == MoneyHistoryType.PRODUCT_BUY) {
             // 상품 구매 관련 create
@@ -88,7 +86,8 @@ public class MoneyServiceImpl implements MoneyService{
 
     public void createMoneyWithMemberUuid(CreateMoneyWithMemberUuidRequestDto createMoneyWithMemberUuidRequestDto) {
         // CreateMoneyRequestDto build 후 createMoney 호출
-        createMoney(CreateMoneyRequestDto.builder()
+        MoneyService proxy = applicationContext.getBean(MoneyService.class);
+        proxy.createMoney(CreateMoneyRequestDto.builder()
                 .memberUuid(createMoneyWithMemberUuidRequestDto.getMemberUuid())
                 .amount(createMoneyWithMemberUuidRequestDto.getAmount())
                 .isPositive(createMoneyWithMemberUuidRequestDto.getIsPositive())
@@ -100,7 +99,7 @@ public class MoneyServiceImpl implements MoneyService{
     @Override
     public ReadMoneyAmountResponseDto readUsableMoney(ReadMoneyAmountRequestDto readMoneyAmountRequestDto) {
         // money가 하나라도 있으면 최신 값 반환. 없으면 0L 반환
-        Long usableMoney = moneyRepository.findTopByMemberUuidOrderByCreatedAtDesc(
+        Long usableMoney = moneyRepository.findTopByMemberUuidOrderByIdDesc(
                         readMoneyAmountRequestDto.getMemberUuid()
                 ).map(money -> money.getRemainingMoney() - money.getFrozenMoney())
                 .orElse(0L);
